@@ -1,0 +1,19 @@
+<doctype html>
+<title>Test App</title>
+<h2>Manage Data</h2>
+<body>
+<a href="/">Home</a></ br>
+<h3>Courses:</h3>
+<ul>
+    {% for course in courses %}
+    <li>
+    <h4><a href="/viewcourse?id={{course.id}}">{{course.name}}</a>
+    <a class="btn btn-success" href="/editcourse?id={{course.id}}">Book</a>
+    <a class="btn btn-info" href="/editcourse?id={{course.id}}">Edit</a>
+    <a class="btn btn-danger" href="/deletecourse?id={{course.id}}">Delete</a></h4>
+    </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
