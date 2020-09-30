@@ -13,6 +13,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #postgres
 #app.config['SQLALCHEMY_DATABASE_URI'] ='postgresql+psycopg2://postgres:password@localhost/quotes'
 
+#mysql
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://flaskuser:flask123@localhost/testdb11'
+
 #Creating a table
 #Create an instance of SQLAlchemy
 db = SQLAlchemy(app)
@@ -42,10 +45,19 @@ def index():
 	return render_template('index.html',result=result)
 #	return '<h1>Hello World!</h1>'
 
+#table view
 @app.route('/table')
 def table():
 	results = eData.query.all()
 	return render_template('table.html',results=results)
+
+#pagination
+@app.route("/pages/<int:page_num>")  
+def pages(page_num):
+    all_data = eData.query.paginate(per_page=2, page=page_num, error_out=True)
+    #all_data = eData.query.all()
+    return render_template("pages.html",all_data = all_data) 
+
 
 @app.route('/data')
 def data():
