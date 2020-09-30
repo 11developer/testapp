@@ -9,7 +9,7 @@ app = Flask(__name__, template_folder="templates")
 app.secret_key = "SecretKey20202020202020"
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data_test.sqlite')
-
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #postgres
 #app.config['SQLALCHEMY_DATABASE_URI'] ='postgresql+psycopg2://postgres:password@localhost/quotes'
 
@@ -95,6 +95,25 @@ def delete(id):
     flash("Data Deleted Successfully")
 
     return redirect('/')
+
+#search page
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+	return render_template('search.html')
+
+
+#search result
+@app.route('/results', methods =['POST'])
+def search_results():
+	search = request.form['search']
+	search_text = search
+	qry1 = eData.query.filter(eData.username.like('%'+ search_text +'%')).all()
+	qry2 = eData.query.filter(eData.email.like('%'+ search_text +'%')).all()
+	qry3 = eData.query.filter(eData.id.like('%'+ search_text +'%')).all()
+	result = qry1 or qry2 or qry3
+	return render_template('search.html', result=result)
+
+
 
 
 
